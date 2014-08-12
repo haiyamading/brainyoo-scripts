@@ -1,5 +1,5 @@
 # -*- coding: utf-8; -*-
-# csv2brainyoo.py converts CSV files into the Brainyoo XML format.
+# csv2brainyoo.py converts CSV files into the Brainyoo CSV format.
 # Copyright (C) 2014  monte <at> mibix.de
 #
 # This program is free software: you can redistribute it and/or modify
@@ -56,15 +56,13 @@ def main(argv):
 def usage():
     print '-h,--help'
     print '-i,--input=file.csv'
-    print '-o,--output=file.xml'
+    print '-o,--output=file.csv'
     print '-m,--mapping=qahi (question, answer, hint, ignore)'
 
 def csv2brainyoo( input, output, mapping ) :
     map      = parseMapping( mapping )
     data     = readCSV( input, map )
-    xml_data = generateXML( data )
-    
-    writeXML( output, xml_data )
+    writeCsv( output, data )
    
 
 
@@ -82,18 +80,16 @@ def readCSV( input, map ) :
     
     return data
     
-def generateXML(  data ) :
-    #for dict in data :
-    #    print dict["question"], ",",
-    #    print dict["answer"],   ",",
-    #    print dict["hint"],     ","
+def generateCsv(  data ) :
     return None
     
     
-def writeXML( output, xml_data ) :
-    text_file = open(output, "w")
-    text_file.write( xml_data )
-    text_file.close()
+def writeCsv( output, data ) :
+    file = open(output, "w")
+    csvfile = csv.writer(file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    for dict in data :
+        csvfile.writerow([ dict["question"], dict["answer"], dict["hint"]])
+    file.close()
 
     
 if __name__ == "__main__":
